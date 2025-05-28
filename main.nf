@@ -24,8 +24,9 @@ if (params.help) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { parse_samplesheet } from './subworkflows/parse_samplesheet.nf'
-
+include { CONCATENATE_FASTQ } from './modules/local/concatenate_fastq.nf'
+include { DOWNSAMPLE} from './subworkflows/downsample_fastq.nf'
+include { PARSE_SAMPLESHEET } from './subworkflows/parse_samplesheet.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -33,8 +34,8 @@ include { parse_samplesheet } from './subworkflows/parse_samplesheet.nf'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-
 workflow {
-    reads = parse_samplesheet(params.samplesheet, params.run_dir)
-    reads.view()
+    ch_fastqs = PARSE_SAMPLESHEET(params.samplesheet)
+    ch_fastqs = CONCATENATE_FASTQ(ch_fastqs)
+    ch_fastqs = DOWNSAMPLE(ch_fastqs)
 }

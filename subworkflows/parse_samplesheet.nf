@@ -1,28 +1,28 @@
-nextflow.enable.dsl=2
-
-workflow parse_samplesheet {
+workflow PARSE_SAMPLESHEET {
     take:
-    samplesheet
-    run_dir
+    samplesheet // path: [mandatory] csv
+    
 
     main:
-    Channel.fromPath(samplesheet)
+    Channel.fromPath(params.samplesheet)
         .splitCsv(header: true)
         .map { row ->
-            def glob_pattern = "${run_dir}/${row.fastq_prefix}_*.fastq*"
+            def glob_pattern = "${params.run_dir}/${row.fastq_prefix}_*.fastq*"
             def fq_files = file(glob_pattern).collect()
-            tuple(row.fastq_prefix, fq_files)
-        }
-        .map { prefix, fq_files ->
-            def groups = fq_files.groupBy { it.name.find(/(R1|R2|I1|I2)/) }
-            def read_groups = groups.collect { read_id, files ->
-                [read_id, files]
+            if (!fq_files) {
+                throw new IllegalArgumentException("No FASTQ files found for sample: ${row.sample_id} at ${glob_pattern}")
             }
-            tuple(prefix, read_groups)
+            def meta = [:]
+            meta.id = row.sample_id
+            row.each { key, value ->
+                if (key != 'sample_id' && key != 'fastq_prefix') {
+                    meta[key] = value
+                }
+            }
+            [ meta, fq_files ]
         }
-        .set { fastqs_ch }
-
+        .set { ch_fastqs }
     emit:
-    fastqs = fastqs_ch
+    ch_fastqs = ch_fastqs // channel: [mandatory] meta, reads
 }
 
