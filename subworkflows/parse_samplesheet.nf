@@ -23,6 +23,6 @@ workflow PARSE_SAMPLESHEET {
         }
         .set { ch_fastqs }
     emit:
-    ch_fastqs = ch_fastqs // channel: [mandatory] meta, reads
+    ch_fastqs // channel: [mandatory] meta, reads
 }
 

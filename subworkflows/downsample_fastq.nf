@@ -1,4 +1,4 @@
-include { downsample_fastq } from '../modules/local/downsample_fastq.nf'
+include { DOWNSAMPLE_FASTQ } from '../modules/local/downsample_fastq.nf'
 
 workflow DOWNSAMPLE {
     take: 
@@ -10,7 +10,8 @@ workflow DOWNSAMPLE {
                 fq_list.collect { fq -> [ meta, fq ] }
             }
             .set { ch_fastq_individuals }
-        ch_grouped_downsampled = downsample_fastq(ch_fastq_individuals, params.downsample_target)
+        DOWNSAMPLE_FASTQ(ch_fastq_individuals, params.downsample_target)
+        ch_grouped_downsampled = DOWNSAMPLE_FASTQ.out.fastqs
             .groupTuple()
     emit: 
         fastqs = ch_grouped_downsampled // channel: [mandatory] meta, reads

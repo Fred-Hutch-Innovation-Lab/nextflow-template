@@ -7,7 +7,7 @@ process CONCATENATE_FASTQ {
     tuple val(meta), path(fastqs)
     
     output:
-    tuple val(meta), path("*.fastq.gz", includeInputs: false)
+    tuple val(meta), path("*.fastq.gz", includeInputs: false), emit: fastqs
     
     script:
     """
