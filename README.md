@@ -7,3 +7,8 @@ The template is structured such that the `main.nf` holds just high-level workflo
 # Profiles
 
 Use `-profile slurm` to have jobs submitted to the HPC job scheduler.
+
+# conf
+
+`modules.config` holds arguments to scripts and command-line tools called by modules. Per the [nf-core documentation](https://nf-co.re/docs/guidelines/components/modules#optional-command-arguments), this is how these should be specfied. Gross, but allows overriding more easily I guess.
+
