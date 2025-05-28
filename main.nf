@@ -5,9 +5,9 @@ def helpMessage() {
     log.info """
     Usage:
     The typical command for running the pipeline is as follows:
-    ./nextflow run main.nf -c nextflow.config
+    ./nextflow run main.nf -c run_arguments.config
 
-    Edit the nextflow.config file to add run parameters
+    Edit the run_arguments.config file to add run parameters
     """.stripIndent()
 }
 
