@@ -13,6 +13,8 @@ workflow DOWNSAMPLE {
         DOWNSAMPLE_FASTQ(ch_fastq_individuals, params.downsample_target)
         ch_grouped_downsampled = DOWNSAMPLE_FASTQ.out.fastqs
             .groupTuple()
+        ch_versions = DOWNSAMPLE_FASTQ.out.versions
     emit: 
         fastqs = ch_grouped_downsampled // channel: [mandatory] meta, reads
+        versions = ch_versions // channel: [mandatory] versions.yml
 }

@@ -27,6 +27,7 @@ if (params.help) {
 include { CONCATENATE_FASTQ } from './modules/local/concatenate_fastq.nf'
 include { DOWNSAMPLE } from './subworkflows/downsample_fastq.nf'
 include { PARSE_SAMPLESHEET } from './subworkflows/parse_samplesheet.nf'
+include { LOG_VERSIONS } from './subworkflows/log_versions.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,6 +37,14 @@ include { PARSE_SAMPLESHEET } from './subworkflows/parse_samplesheet.nf'
 
 workflow {
     ch_fastqs = PARSE_SAMPLESHEET(params.samplesheet)
+    ch_versions = Channel.empty()
+
     CONCATENATE_FASTQ(ch_fastqs)
     DOWNSAMPLE(CONCATENATE_FASTQ.out.fastqs)
+
+    ch_versions = ch_versions.mix(
+        // CONCATENATE_FASTQ.out.versions
+        DOWNSAMPLE.out.versions
+    )
+    LOG_VERSIONS(ch_versions)
 }
