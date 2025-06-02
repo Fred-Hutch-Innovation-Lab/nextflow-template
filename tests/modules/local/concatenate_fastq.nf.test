@@ -1,0 +1,18 @@
+nextflow_process {
+    name "Test process CONCATENATE_FASTQ"
+    script "modules/local/concatenate_fastq.nf"
+    process "CONCATENATE_FASTQ"
+
+    test("") {
+        when {
+            process {
+                """
+                input[0] = file("${projectDir}")
+                """
+            }
+        }
+        then {
+            
+        }
+    }
+}

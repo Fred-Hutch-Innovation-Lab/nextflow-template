@@ -1,0 +1,27 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                // define parameters here. Example: 
+                // outdir = "tests/results"
+                run_dir = "${projectDir}/tests/test_data/"
+                samplesheet = "${projectDir}/tests/test_data/samplesheet.csv"
+                outdir = "${projectDir}/tests/test_out"
+                concatenate_fastq = true
+                downsample = true
+                downsample_target = 10000
+            }
+        }
+
+        then {
+            assert workflow.success
+        }
+
+    }
+
+}

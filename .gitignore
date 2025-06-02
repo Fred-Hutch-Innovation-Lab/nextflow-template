@@ -13,3 +13,11 @@ wheels/
 
 .nextflow.log*
 .nextflow/*
+work/*
+
+# nf-test
+.nf-test/*
+.nf-test.log
+.tests/*
+tests/data/*
+tests/results/*
