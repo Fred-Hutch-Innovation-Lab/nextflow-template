@@ -1,14 +1,102 @@
-Template for creating new Nextflow pipelines compatible with Apptainer and SLURM. Intended for use on HPCs. 
+# Nextflow Pipeline Template
 
-The template is structured such that the `main.nf` holds just high-level workflow structure, while the minutia of channel management is handeled in subworkflows. While the nf-core docs suggest subworkflows should have at least 2 processes, I'm choosing to use sub-workflows for all processes to keep the main workflow easy to read. 
+This is a template Nextflow pipeline that follows nf-core guidelines for modular and maintainable workflow development.
 
-`main.nf > subworkflows > processes (modules) > scripts (bin)` 
+## Pipeline Structure
 
-# Profiles
+The pipeline is organized into several directories:
 
-Use `-profile slurm` to have jobs submitted to the HPC job scheduler.
+- `main.nf`: The main workflow file that orchestrates the entire pipeline
+- `modules/`: Contains individual process modules
+- `subworkflows/`: Chains related processes/modules
+- `conf/`: Configuration files
+  - `nextflow.config`: Main configuration file with default arguments and profiles
+  - `modules.config`: Module-specific configurations
+- `bin/`: Custom scripts and executables
+- `tests/`: Test data and test configurations
 
-# conf
+## Running the Pipeline
 
-`modules.config` holds arguments to scripts and command-line tools called by modules. Per the [nf-core documentation](https://nf-co.re/docs/guidelines/components/modules#optional-command-arguments), this is how these should be specfied. Gross, but allows overriding more easily I guess.
+Basic usage:
+```bash
+./nextflow run main.nf -c run_arguments.config
+```
 
+For more options, see the help message:
+```bash
+./nextflow run main.nf --help
+```
+
+## Modifying the Pipeline
+
+Use the [nf-core guidelines](https://nf-co.re/docs/guidelines/components/overview) for best practices and further details on the workflow.
+
+### Sample metadata
+
+Best practice is to use explicit metadata (e.g. samplesheet, not filenames) and propogate them through channels as a tuple.
+https://training.nextflow.io/2.1/advanced/metadata/
+
+### Adding New Processes/Modules
+
+1. Create new process modules in the `modules/` directory
+2. Add process-specific configurations in `conf/modules.config`
+4. Include the new module in `main.nf`
+
+#### Module Configuration
+
+To add adjustable command line arguments for script calls in processes, define the parameters in `nextflow.config`:
+
+```groovy
+params {
+    my_param = 'default_value'
+}
+```
+
+Ideally all file parameters should be passed into the channel as an input.
+
+Command line arguments should be added to `conf/modules.config`. This follows [nf-core guidelines](https://nf-co.re/docs/guidelines/components/modules#optional-command-arguments) and allows them to be overwritten by an (advanced) user-provided config if necessary. For example:
+
+```groovy
+process {
+    withName: DOWNSAMPLE_FASTQ {
+    ext.args = {[
+        params.downsample_target, 
+        "-s100"
+    ].join(' ')}
+    ext.prefix = { "${fastq.baseName}" }
+}
+```
+
+Then the process has an `$args` variable
+
+```grovy
+...
+script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${fastq.baseName}"
+    """
+    seqtk sample \
+        ${args} \
+        ${fastq} \
+        | gzip > ${prefix}_downsampled.fastq.gz
+    """
+```
+
+
+
+### Subworkflows
+
+Subworkflows are used to group related processes and improve code organization. They are defined in the `subworkflows/` directory and included in `main.nf`. Nf-core guidelines suggest subworkflows be used to group 2 or more processes.
+
+### Testing
+
+1. Add test data in the `tests/` directory
+2. Create test configurations in `conf/`
+3. Run tests using the provided test scripts
+
+## Best Practices
+
+1. **Modularity**: Keep processes independent and reusable
+2. **Configuration**: Use `modules.config` for process-specific settings
+3. **Containerization**: Try to use Apptainer rather than Gizmo modules
+4. **Testing**: Include tests for all new functionality

@@ -10,11 +10,13 @@ process CONCATENATE_FASTQ {
     tuple val(meta), path("*.fastq.gz", includeInputs: false), emit: fastqs
     
     script:
+    def files = fastqs.join(' ')
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     concatenate_fastq.py \
-        --files ${fastqs.join(' ')} \
-        --sampleID ${meta.id} \
-        --copy_method symlink \
-        --output .
+        --files ${files} \
+        --sampleID ${prefix} \
+        ${args}
     """
 } 
