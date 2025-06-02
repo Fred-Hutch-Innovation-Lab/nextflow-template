@@ -9,9 +9,9 @@ nextflow_pipeline {
             params {
                 // define parameters here. Example: 
                 // outdir = "tests/results"
-                run_dir = "${projectDir}/tests/test_data/"
-                samplesheet = "${projectDir}/tests/test_data/samplesheet.csv"
-                outdir = "${projectDir}/tests/test_out"
+                run_dir = "${projectDir}/tests/data/"
+                samplesheet = "${projectDir}/tests/data/samplesheet.csv"
+                outdir = "${projectDir}/tests/results"
                 concatenate_fastq = true
                 downsample = true
                 downsample_target = 10000
