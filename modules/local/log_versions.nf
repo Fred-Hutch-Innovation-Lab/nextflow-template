@@ -15,7 +15,7 @@ workflow LOG_VERSIONS {
     main:  
         ch_collated_versions = softwareVersionsToYAML(ch_versions)
             .collectFile(
-                name: 'versions.yml',
+                name: 'pipeline_versions.yml',
                 sort: true,
                 newLine: true,
             )

@@ -67,14 +67,12 @@ workflow {
     LOG_VERSIONS(ch_versions)
 
     publish:
-    LOG_VERSIONS.out.versions >> 'versions'
-    // versions = path(LOG_VERSIONS.out.versions)
-        // versions = LOG_VERSIONS.out.versions
+    versions = LOG_VERSIONS.out.versions // >> 'versions'
 }
 
 output {
     versions {
-        path 'versions'
+        // path "pipeline_versions.yml"
         mode 'copy'
     }
 }
