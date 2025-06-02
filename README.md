@@ -88,11 +88,12 @@ script:
 
 Subworkflows are used to group related processes and improve code organization. They are defined in the `subworkflows/` directory and included in `main.nf`. Nf-core guidelines suggest subworkflows be used to group 2 or more processes.
 
-### Testing
+## Testing
 
-1. Add test data in the `tests/` directory
-2. Create test configurations in `conf/`
-3. Run tests using the provided test scripts
+https://nf-co.re/docs/tutorials/tests_and_test_data/nf-test_writing_tests
+https://www.nf-test.com/docs/getting-started/
+
+
 
 ## Best Practices
 
