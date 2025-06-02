@@ -6,16 +6,9 @@ nextflow_pipeline {
     test("Should run without failures") {
 
         when {
+            // profile = "test"
             outputDir = "${projectDir}/tests/results"
-            params {
-                // define parameters here. Example: 
-                // outdir = "tests/results"
-                run_dir = "${projectDir}/tests/data/"
-                samplesheet = "${projectDir}/tests/data/samplesheet.csv"
-                concatenate_fastq = true
-                downsample = true
-                downsample_target = 10000
-            }
+
         }
 
         then {
@@ -23,5 +16,6 @@ nextflow_pipeline {
         }
 
     }
+
 
 }
