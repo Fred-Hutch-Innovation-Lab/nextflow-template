@@ -1,10 +1,22 @@
 #!/usr/bin/env nextflow
-nextflow.enable.dsl=2
 
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    NEXTFLOW OPTIONS AND EXPERIMENTAL FEATURES
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
+nextflow.enable.dsl=2
 // needed to use the output directive
 // currently experimental, so implementation may change
 // https://www.nextflow.io/docs/latest/workflow.html#workflow-outputs
 nextflow.preview.output = true
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    HELP MESSAGE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 
 def helpMessage() {
     log.info """
@@ -25,7 +37,7 @@ if (params.help) {
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS / WORKFLOWS
+    IMPORT FUNCTIONS, MODULES, PROCESSES, WORKFLOWS, AND SUBWORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
@@ -36,7 +48,7 @@ include { LOG_VERSIONS } from './modules/local/log_versions.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    WORKFLOW
+    MAIN WORKFLOW
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
