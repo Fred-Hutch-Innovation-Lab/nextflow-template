@@ -1,6 +1,11 @@
 #!/usr/bin/env nextflow
 nextflow.enable.dsl=2
 
+// needed to use the output directive
+// currently experimental, so implementation may change
+// https://www.nextflow.io/docs/latest/workflow.html#workflow-outputs
+nextflow.preview.output = true
+
 def helpMessage() {
     log.info """
     Usage:
@@ -36,6 +41,7 @@ include { LOG_VERSIONS } from './modules/local/log_versions.nf'
 */
 
 workflow {
+    main:
     ch_fastqs = PARSE_SAMPLESHEET(params.samplesheet)
     ch_versions = Channel.empty()
 
@@ -47,4 +53,16 @@ workflow {
         DOWNSAMPLE_FASTQ.out.versions
     )
     LOG_VERSIONS(ch_versions)
+
+    publish:
+    LOG_VERSIONS.out.versions >> 'versions'
+    // versions = path(LOG_VERSIONS.out.versions)
+        // versions = LOG_VERSIONS.out.versions
+}
+
+output {
+    versions {
+        path 'versions'
+        mode 'copy'
+    }
 }
