@@ -90,7 +90,13 @@ Subworkflows are used to group related processes and improve code organization. 
 
 ## Testing
 
-Use the `nf-test` package to create and run tests. There is an executable at `/fh/fast/_IRC/FHIL/grp/bioinfo_tools/nf-test`.
+Use the `nf-test` package to create and run tests. There is an executable at `/fh/fast/_IRC/FHIL/grp/bioinfo_tools/nf-test`. To test the pipeline will complete, you can use the following command:
+
+```
+/fh/fast/_IRC/FHIL/grp/bioinfo_tools/nf-test test tests/main.nf.test -c conf/nf-test.config
+```
+
+Further reading:
 
 https://nf-co.re/docs/tutorials/tests_and_test_data/nf-test_writing_tests
 
