@@ -7,9 +7,9 @@ nextflow_workflow {
     test("Should run without failures") {
 
         when {
+            outputDir = "tests/results"
             params {
                 // define parameters here. Example:
-                outdir = "tests/results"
             }
             workflow {
                 """
