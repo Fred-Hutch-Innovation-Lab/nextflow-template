@@ -4,20 +4,17 @@ nextflow_workflow {
     script "modules/local/downsample_fastq.nf"
     workflow "DOWNSAMPLE_FASTQ"
 
-    test("Should run without failures") {
+    test("Deterministic downsampling") {
 
         when {
-            outputDir = "tests/results"
-            params {
-                // define parameters here. Example:
-            }
             workflow {
                 """
                 // define inputs of the workflow here. Example:
-                input[0] = tuple(
-                    ['test_sample'],
-                    [file("${projectDir}/tests/test_data/C2-R-F1SA_S1_R1_001.fastq.gz")]
-                ) 
+                input[0] = Channel.of([
+                    [ID: 'test_sample'],
+                    [file("${projectDir}/tests/data/C2-R-F1SA_S1_R1_001.fastq.gz"),
+                     file("${projectDir}/tests/data/C2-R-F1SA_S1_R2_001.fastq.gz")]
+                ])
                 input[1] = 10000
                 """
             }
@@ -25,7 +22,9 @@ nextflow_workflow {
 
         then {
             assert workflow.success
-            assert snapshot(workflow.out).match()
+            assert path(workflow.out.fastqs.get(0).get(1).get(0)).md5 == "d41d8cd98f00b204e9800998ecf8427e"
+            assert path(workflow.out.fastqs.get(0).get(1).get(1)).md5 == "adsf"
+            // assert snapshot(workflow.out).match()
         }
 
     }
