@@ -57,7 +57,9 @@ workflow {
     ch_versions = Channel.empty()
 
     CONCATENATE_FASTQ(ch_fastqs)
+    CONCATENATE_FASTQ.out.stdout.view()
     ch_fastqs = CONCATENATE_FASTQ.out.fastqs
+
     DOWNSAMPLE_FASTQ(ch_fastqs, params.downsample_target)
     ch_fastqs = DOWNSAMPLE_FASTQ.out.fastqs
 
@@ -69,6 +71,7 @@ workflow {
     ch_versions = LOG_VERSIONS.out.versions
 
     publish:
+    // concatenation_logs = CONCATENATE_FASTQ.out.stdout
     versions = ch_versions // >> 'versions'
 }
 
