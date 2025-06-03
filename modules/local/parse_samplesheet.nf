@@ -7,7 +7,7 @@ workflow PARSE_SAMPLESHEET {
     Channel.fromPath(params.samplesheet)
         .splitCsv(header: true)
         .map { row ->
-            def glob_pattern = "${params.run_dir}/${row.fastq_prefix}_*.fastq*"
+            def glob_pattern = "${params.run_dir}/**${row.fastq_prefix}_*.fastq*"
             def fq_files = file(glob_pattern).collect()
             if (!fq_files) {
                 throw new IllegalArgumentException("No FASTQ files found for sample: ${row.id} at ${glob_pattern}")

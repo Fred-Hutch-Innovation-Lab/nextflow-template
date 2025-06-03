@@ -26,7 +26,7 @@ process DOWNSAMPLE_FASTQ_PROCESS {
     ## || true because running seqtk with no arguments returns error code 1
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-    seqtk: \$( seqtk |& sed '/Version:/!d; s/Version: //' || true )
+        seqtk: \$( seqtk |& sed '/Version:/!d; s/Version: //' || true )
     END_VERSIONS
     """
 }

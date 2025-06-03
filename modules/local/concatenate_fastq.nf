@@ -19,4 +19,9 @@ process CONCATENATE_FASTQ {
         --sampleID ${prefix} \
         ${args}
     """
+    stub:
+
+    """
+    touch ${prefix}.fastq.gz
+    """    
 } 

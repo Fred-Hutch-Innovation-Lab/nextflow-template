@@ -102,6 +102,8 @@ Further reading:
 
 https://nf-co.re/docs/tutorials/tests_and_test_data/nf-test_writing_tests
 
+https://nf-co.re/docs/contributing/nf-test/assertions
+
 https://www.nf-test.com/docs/getting-started/
 
 
