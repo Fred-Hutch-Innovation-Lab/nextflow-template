@@ -7,15 +7,20 @@ workflow PARSE_SAMPLESHEET {
     Channel.fromPath(params.samplesheet)
         .splitCsv(header: true)
         .map { row ->
-            def glob_pattern = "${params.run_dir}/**${row.fastq_prefix}_*.fastq*"
-            def fq_files = file(glob_pattern).collect()
+            def glob_pattern = "${params.run_dir}/${row.fastq_prefix}_*.fastq*"
+            def fq_files = []
+            new File(params.run_dir).traverse(type: groovy.io.FileType.FILES) {
+                if (it.name ==~ /${row.fastq_prefix}_.*\.fastq.*/) {
+                    fq_files << it.toString()
+                }
+            }
             if (!fq_files) {
-                throw new IllegalArgumentException("No FASTQ files found for sample: ${row.sample_id} at ${glob_pattern}")
+                throw new IllegalArgumentException("No FASTQ files found for sample: ${row.id} at ${glob_pattern}")
             }
             def meta = [:]
-            meta.id = row.sample_id
+            meta.id = row.id
             row.each { key, value ->
-                if (key != 'sample_id' && key != 'fastq_prefix') {
+                if (key != 'id' && key != 'fastq_prefix') {
                     meta[key] = value
                 }
             }
