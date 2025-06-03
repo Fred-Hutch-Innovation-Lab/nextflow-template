@@ -14,11 +14,11 @@ process DOWNSAMPLE_FASTQ_PROCESS {
     script:
     // https://nf-co.re/docs/guidelines/components/modules#optional-command-arguments
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${fastq.baseName}"
+    def prefix = task.ext.prefix ?: "${fastq.simpleName}"
     """
     seqtk sample \
-        ${args} \
         ${fastq} \
+        ${args} \
         | gzip > ${prefix}_downsampled.fastq.gz
     
     ## https://nf-co.re/docs/guidelines/components/modules#emission-of-versions

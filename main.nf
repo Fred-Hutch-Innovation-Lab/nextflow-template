@@ -58,7 +58,8 @@ workflow {
     ch_versions = Channel.empty()
 
     CONCATENATE_FASTQ(ch_fastqs)
-    DOWNSAMPLE_FASTQ(CONCATENATE_FASTQ.out.fastqs, params.downsample_target)
+    ch_fastqs = CONCATENATE_FASTQ.out.fastqs
+    DOWNSAMPLE_FASTQ(ch_fastqs, params.downsample_target)
 
     ch_versions = ch_versions.mix(
         // CONCATENATE_FASTQ.out.versions

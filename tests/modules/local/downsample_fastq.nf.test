@@ -22,8 +22,8 @@ nextflow_workflow {
 
         then {
             assert workflow.success
-            assert path(workflow.out.fastqs.get(0).get(1).get(0)).md5 == "d41d8cd98f00b204e9800998ecf8427e"
-            assert path(workflow.out.fastqs.get(0).get(1).get(1)).md5 == "adsf"
+            assert path(workflow.out.fastqs.get(0).get(1).get(0)).md5 == "05053cf89ed9bd37c3ebc54cb5bb7f46"
+            assert path(workflow.out.fastqs.get(0).get(1).get(1)).md5 == "decdbf0dbf972b3870b8409a547f19f6"
             // assert snapshot(workflow.out).match()
         }
 
