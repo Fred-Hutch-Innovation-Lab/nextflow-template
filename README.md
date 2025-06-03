@@ -8,10 +8,12 @@ The pipeline is organized into several directories:
 
 - `main.nf`: The main workflow file that orchestrates the entire pipeline
 - `modules/`: Contains individual process modules
-- `subworkflows/`: Chains related processes/modules
+- `subworkflows/`: Chains related processes/modules or wraps channel manipulation code
 - `conf/`: Configuration files
   - `nextflow.config`: Main configuration file with default arguments and profiles
   - `modules.config`: Module-specific configurations
+  - `nf-test.config`: For running tests
+  - `profiles.config`: Defining profiles separately cleanliness
 - `bin/`: Custom scripts and executables
 - `tests/`: Test data and test configurations
 

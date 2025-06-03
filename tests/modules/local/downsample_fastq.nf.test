@@ -11,7 +11,7 @@ nextflow_workflow {
                 """
                 // define inputs of the workflow here. Example:
                 input[0] = Channel.of([
-                    [ID: 'test_sample'],
+                    [id: 'test_sample'],
                     [file("${projectDir}/tests/data/C2-R-F1SA_S1_R1_001.fastq.gz"),
                      file("${projectDir}/tests/data/C2-R-F1SA_S1_R2_001.fastq.gz")]
                 ])
