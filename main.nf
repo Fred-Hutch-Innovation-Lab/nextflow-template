@@ -45,6 +45,7 @@ include { CONCATENATE_FASTQ } from './modules/local/concatenate_fastq.nf'
 include { DOWNSAMPLE_FASTQ } from './modules/local/downsample_fastq.nf'
 include { PARSE_SAMPLESHEET } from './modules/local/parse_samplesheet.nf'
 include { LOG_VERSIONS } from './modules/local/log_versions.nf'
+include { RUNTIME_SNAPSHOT } from './modules/local/runtime_snapshot.nf'
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     MAIN WORKFLOW
@@ -53,6 +54,7 @@ include { LOG_VERSIONS } from './modules/local/log_versions.nf'
 
 workflow {
     main:
+    RUNTIME_SNAPSHOT()
     ch_fastqs = PARSE_SAMPLESHEET(params.samplesheet)
     ch_versions = Channel.empty()
 
@@ -73,11 +75,33 @@ workflow {
     publish:
     // concatenation_logs = CONCATENATE_FASTQ.out.stdout
     versions = ch_versions // >> 'versions'
+    run_details = RUNTIME_SNAPSHOT.out.run_details
 }
 
 output {
     versions {
-        // path "pipeline_versions.yml"
+        path "nextflow_logs/versions.txt"
+        mode 'copy'
+    }
+    run_details {
+        path "nextflow_logs/nextflow_parameters_log.txt"
         mode 'copy'
     }
 }
+
+// workflow.onComplete {
+//     if (workflow.profile != 'dryrun') {
+//         if (params.emails?.trim()){
+//             def msg = """\
+//             Pipeline execution summary
+//             ---------------------------
+//             Completed at    : ${workflow.complete}
+//             Duration        : ${workflow.duration}
+//             Success         : ${workflow.success}
+//             exit status     : ${workflow.exitStatus}
+//             """
+//             .stripIndent()
+//             sendMail(to: "${params.emails}", subject: 'Extraction Complete', body: msg)
+//         } 
+//     }
+// }
