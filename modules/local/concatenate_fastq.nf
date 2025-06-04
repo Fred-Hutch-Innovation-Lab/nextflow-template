@@ -18,7 +18,7 @@ process CONCATENATE_FASTQ {
     concatenate_fastq.py \
         --files ${files} \
         --sampleID ${prefix} \
-        ${args}
+        ${args}      
     """
     stub:
 
